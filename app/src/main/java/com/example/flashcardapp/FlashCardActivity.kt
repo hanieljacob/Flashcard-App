@@ -1,19 +1,16 @@
 package com.example.flashcardapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import com.example.flashcardapp.databinding.ActivityFlashCardBinding
 import androidx.activity.viewModels
-import com.example.flashcardapp.databinding.ActivityMainBinding
-import kotlin.random.Random
+import androidx.appcompat.app.AppCompatActivity
+import com.example.flashcardapp.databinding.ActivityFlashCardBinding
 
 class FlashCardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityFlashCardBinding
     private val flashcardsViewModel: FlashcardsViewModel by viewModels()
-
     private fun disableButton(button: Button) {
         button.isEnabled = false
     }
@@ -40,6 +37,8 @@ class FlashCardActivity : AppCompatActivity() {
         binding = ActivityFlashCardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        displayCurrentProblem()
+
         if (flashcardsViewModel.isGenerateButtonDisabled) {
             disableButton(binding.generateButton)
         }
@@ -47,7 +46,18 @@ class FlashCardActivity : AppCompatActivity() {
             enableButton(binding.generateButton)
         }
 
+        if(flashcardsViewModel.displayGreeting) {
+            flashcardsViewModel.updateGreeting()
+            val extras = intent.extras
+            if (extras != null) {
+                Toast.makeText(this, "Welcome " + extras.getString("username"), Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+
+
         binding.generateButton.setOnClickListener {
+            flashcardsViewModel.updateFirstTime()
             disableButton(binding.generateButton)
             flashcardsViewModel.isGenerateButtonDisabled = true
             flashcardsViewModel.restartFlashcards()
@@ -55,6 +65,10 @@ class FlashCardActivity : AppCompatActivity() {
         }
 
         binding.submitButton2.setOnClickListener {
+            if(flashcardsViewModel.firstTime){
+                Toast.makeText(this, "Generate some problems first!", Toast.LENGTH_SHORT).show()
+            }
+            else{
             if (!flashcardsViewModel.completedFlashcards) {
                 val userAnswer = binding.answerEditText.text.toString().toInt()
                 if (userAnswer == flashcardsViewModel.currentQuestionAnswer) {
@@ -80,6 +94,7 @@ class FlashCardActivity : AppCompatActivity() {
                 val scoreString = flashcardsViewModel.currentScore.toString() + " out of " + flashcardsViewModel.totalProblems.toString()
                 Toast.makeText(this@FlashCardActivity, scoreString, Toast.LENGTH_SHORT).show()
                 displayBlankProblem()
+            }
             }
 
         }

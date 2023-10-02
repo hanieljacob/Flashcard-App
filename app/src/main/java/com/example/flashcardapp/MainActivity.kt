@@ -16,8 +16,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.submitButton.setOnClickListener {
             if(binding.usernameEditText.text.toString() == "cs501" && binding.passwordEditText.text.toString() == "123") {
-                println("hello")
-                val intent = Intent(this@MainActivity, FlashCardActivity::class.java)
+                var intent = Intent(this@MainActivity, FlashCardActivity::class.java)
+                intent.putExtra("username", binding.usernameEditText.text.toString())
                 startActivity(intent)
             }
             else{

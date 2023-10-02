@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">FlashcardApp</string>
-    <string name="firstOperandValue">7</string>
-    <string name="operatorValue">+</string>
-    <string name="secondOperandValue">9</string>
+    <string name="firstOperandValue">_</string>
+    <string name="operatorValue">_</string>
+    <string name="secondOperandValue">_</string>
     <string name="generateButton">Generate 10 Random problems</string>
     <string name="answerTextView">Your Answer:</string>
     <string name="submitButton">Submit</string>

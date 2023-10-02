@@ -8,6 +8,8 @@ const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 const val COMPLETED_FLASHCARDS = "COMPLETED_FLASHCARDS"
 const val CURRENT_SCORE = "CURRENT_SCORE"
 const val IS_GENERATE_BUTTON_DISABLED = "IS_GENERATE_BUTTON_DISABLED"
+const val IS_FIRST_TIME = "IS_FIRST_TIME"
+const val DISPLAY_GREETING = "DISPLAY_GREETING"
 class FlashcardsViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
     private var problemBank = generate10Problems()
     private fun generate10Problems(): List<Problem> {
@@ -29,6 +31,14 @@ class FlashcardsViewModel(private val savedStateHandle: SavedStateHandle) : View
     private var currentIndex: Int
         get() = savedStateHandle[CURRENT_INDEX_KEY] ?: 0
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
+
+    var displayGreeting: Boolean
+        get() = savedStateHandle[DISPLAY_GREETING] ?: true
+        set(value) = savedStateHandle.set(DISPLAY_GREETING, value)
+
+    var firstTime: Boolean
+        get() = savedStateHandle[IS_FIRST_TIME] ?: true
+        set(value) = savedStateHandle.set(IS_FIRST_TIME, value)
 
     var currentScore: Int
         get() = savedStateHandle[CURRENT_SCORE] ?: 0
@@ -58,6 +68,15 @@ class FlashcardsViewModel(private val savedStateHandle: SavedStateHandle) : View
     fun incrementScore() {
         currentScore += 1
     }
+
+    fun updateGreeting(){
+        displayGreeting = false
+    }
+
+    fun updateFirstTime(){
+        firstTime = false
+    }
+
     fun moveToNext() {
         if (!completedFlashcards) {
             currentIndex += 1
